@@ -89,7 +89,6 @@ const getAttendanceReport = async (req, res) => {
 
     const where = {};
     if (class_id && Number(class_id) !== 0) {
-        console.log(class_id, Number(class_id))
         where.class_id = Number(class_id);
     }
 

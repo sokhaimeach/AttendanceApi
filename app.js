@@ -16,6 +16,8 @@ const subjectRoutes = require('./routes/subject.route');
 const attendanceRoutes = require('./routes/attendance.route');
 const authRoutes = require('./routes/auth.route');
 const reportRoutes = require('./routes/report.route');
+const telegramRoutes = require('./routes/telegram.route');
+const emailRoutes = require('./routes/email.route');
 
 
 var app = express();
@@ -40,6 +42,8 @@ app.use('/api/v1/subject', subjectRoutes);
 app.use('/api/v1/attendance', attendanceRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/report', reportRoutes);
+app.use('/api/v1/telegram', telegramRoutes);
+app.use('/api/v1/email', emailRoutes);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

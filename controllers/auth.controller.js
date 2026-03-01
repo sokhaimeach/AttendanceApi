@@ -32,7 +32,7 @@ const login = async (req, res) => {
         404,
       );
     }
-    console.log(teacher)
+
     if(!teacher.is_active) {
       return warningResponse(res, "Your account has been suspended. Please contact support.", 403);
     }
@@ -84,13 +84,12 @@ const changeTeacherPassword = async (req, res) => {
   try {
     const { id } = req.params;
     const { old_password, new_password } = req.body;
-    console.log(old_password, new_password);
+
     const teacher = await Teacher.scope(null).findByPk(id);
     if (!teacher) {
       return warningResponse(res, "Teacher not found", 404);
     }
     const isMatch = await teacher.comparePassword(old_password);
-    console.log("check password : ", isMatch);
     if (!isMatch) {
       return warningResponse(res, "Current password is incorrect", 400);
     }

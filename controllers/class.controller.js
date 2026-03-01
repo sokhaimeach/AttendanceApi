@@ -55,7 +55,7 @@ const createClass = async (req, res) => {
 const createClassByFile = async (req, res) => {
     try {
         const data = req.excelData;
-        console.log(data);
+
         const created = await Class.bulkCreate(data, {validate: true});
         successResponse(res, "Create class by file successfully", created);
     } catch(err) {

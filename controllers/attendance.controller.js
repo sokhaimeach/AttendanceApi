@@ -34,7 +34,6 @@ const createAttendance = async (req, res) => {
 const bulkCreateAttendance = async (req, res) => {
   try {
     const attendance = await Attendance.bulkCreate(req.body);
-    console.log(attendance);
 
     successResponse(res, "Created attendace stuccessfully", attendance);
   } catch (err) {
@@ -306,8 +305,6 @@ const exportWeeklyReport = async (req, res) => {
       attIndex.set(key, r);
     }
 
-    // console.log(attIndex.get('1043|2|6'));
-
     const studentWithScore = students.map((s) => {
       const sid = s.student_id ?? s.toJSON().student_id;
       const json = s.toJSON() ? s.toJSON() : s;
@@ -342,10 +339,6 @@ const exportWeeklyReport = async (req, res) => {
 
       return { ...json, total_a, total_p, total_ap, total_l, score };
     });
-
-    // console.log(studentWithScore);
-
-    // res.status(200).json({ studentWithScore });
 
     const buffer = await exportAttendanceScoreStyle(studentWithScore, slotList);
 

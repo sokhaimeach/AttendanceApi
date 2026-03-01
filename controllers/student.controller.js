@@ -133,7 +133,7 @@ const getAllStudents = async (req, res) => {
       ],
       attributes: ["student_id", "studentname_kh", "studentname_en", "gender"],
     });
-    console.log(students.length);
+
     if (students.length === 0) {
       warningResponse(res, "Student not found", 404, []);
     }

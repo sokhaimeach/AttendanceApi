@@ -105,7 +105,7 @@ const getTeacherById = async (req, res) => {
 const getTeacherReport = async (req, res) => {
   try {
     const { count, rows } = await Teacher.findAndCountAll();
-    console.log(rows, count);
+
     const totalTeacherRole = rows.filter((t) => t.role === "teacher").length;
     const totalAdminRole = rows.filter((t) => t.role === "admin").length;
     const totalActive = rows.filter((t) => t.is_active === true).length;
@@ -141,7 +141,7 @@ const updateTeacher = async (req, res) => {
       : teacher.image_url;
 
     // remove old image
-    if(image) {
+    if(image && teacher.image_url) {
       const originalName = teacher.image_url.split('/').pop();
       const filePath = path.join('public', 'images', originalName);
       await fs.removeSync(filePath);
@@ -169,7 +169,7 @@ const updateTeacherImage = async (req, res) => {
     const image = req.file?.filename;
     const imageUrl = image ? `${req.protocol}://${req.get("host")}/images/${image}`: teacher.image_url;
     // remove old image
-    if(image) {
+    if(image && teacher.image_url) {
       const originalName = teacher.image_url.split('/').pop();
       const filePath = path.join('public', 'images', originalName);
       await fs.removeSync(filePath);
@@ -189,7 +189,7 @@ const updateTeacherStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { is_active } = req.body;
-    console.log(is_active);
+
     const teacher = await Teacher.findByPk(id);
     if (!teacher) {
       return warningResponse(res, "Teacher not found", 404);
