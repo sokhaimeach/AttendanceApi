@@ -1,11 +1,11 @@
 const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize(
-    "attendance_db",   // DB name
-    "root",         // DB user
-    "mathematics",             // DB password
+    process.env.DB_NAME,   // DB name
+    process.env.DB_USER_NAME,         // DB user
+    process.env.DB_PASSWORD,             // DB password
     {
-        host: "localhost",
-        port: 8020,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
         dialect: "mysql",
         logging: false
     }

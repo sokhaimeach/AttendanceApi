@@ -39,6 +39,10 @@ const TeacherSchema = sequelize.define(
     image_url: {
       type: DataTypes.STRING,
       defaultValue: null
+    },
+    public_id: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   },
   {

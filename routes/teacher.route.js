@@ -10,12 +10,15 @@ const {
   updateTeacherImage,
   updateTeacherStatus,
 } = require("../controllers/teacher.controller");
-const upload = require("../middleware/upload.middleware");
+// const upload = require("../middleware/upload.middleware");
 const excelToJson = require("../middleware/excelToJson");
-const uploadImage = require("../middleware/uploadImage.middleware");
+// const uploadImage = require("../middleware/uploadImage.middleware");
 const { protect } = require("../middleware/auth.middleware");
 const { rolePermissions } = require("../middleware/role.middleware");
 const router = express.Router();
+const multer = require("multer");
+
+const upload = multer({ dest: "/uploads" });
 
 router
   .route("/")
@@ -23,7 +26,7 @@ router
   .post(
     protect,
     rolePermissions("admin"),
-    uploadImage.single("image"),
+    upload.single("image"),
     createTeacher,
   );
 
@@ -34,7 +37,7 @@ router
   .put(
     protect,
     rolePermissions("admin"),
-    uploadImage.single("image"),
+    upload.single("image"),
     updateTeacher,
   )
   .delete(protect, rolePermissions("admin"), deleteTeacher)
@@ -43,7 +46,7 @@ router
 router.put(
   "/:id/image",
   protect,
-  uploadImage.single("image"),
+  upload.single("image"),
   updateTeacherImage,
 );
 router.put(

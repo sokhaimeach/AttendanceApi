@@ -7,16 +7,21 @@ const {
 const Teacher = require("../models/teacher.model");
 const fs = require('fs-extra');
 const path = require("path");
+const uploadImage = require("../services/uploadImage.service");
+const deleteImage = require("../services/deleteImage.service");
 
 // create new teacher
 const createTeacher = async (req, res) => {
   try {
     const { teachername_kh, teachername_en, role, phone, password } = req.body;
 
-    const image = req.file?.filename;
-    const imageUrl = image
-      ? `${req.protocol}://${req.get("host")}/images/${image}`
-      : null;
+    let imageUrl = null;
+    let publicId = null;
+    if(req.file.path) {
+      const uploaded = await uploadImage(req.file.path);
+      imageUrl = uploaded.url;
+      publicId = uploaded.publicId;
+    }
 
     const teacher = new Teacher(
       {
@@ -26,6 +31,7 @@ const createTeacher = async (req, res) => {
         phone,
         password,
         image_url: imageUrl,
+        public_id: publicId
       },
       { validate: true, isNewRecord: true },
     );
@@ -135,16 +141,17 @@ const updateTeacher = async (req, res) => {
       return warningResponse(res, "Teacher not found", 404);
     }
     const { teachername_kh, teachername_en, phone } = req.body;
-    const image = req.file?.filename;
-    const imageUrl = image
-      ? `${req.protocol}://${req.get("host")}/images/${image}`
-      : teacher.image_url;
+    let imageUrl = null;
+    let publicId = null;
+    if(req.file.path) {
+      const uploaded = await uploadImage(req.file.path);
+      imageUrl = uploaded.url;
+      publicId = uploaded.publicId;
+    }
 
     // remove old image
-    if(image && teacher.image_url) {
-      const originalName = teacher.image_url.split('/').pop();
-      const filePath = path.join('public', 'images', originalName);
-      await fs.removeSync(filePath);
+    if(imageUrl && teacher.image_url && teacher.public_id) {
+      const removeImage = await deleteImage(teacher.public_id);
     }
 
     Object.assign(teacher, { teachername_kh, teachername_en, phone, image_url: imageUrl });
@@ -166,16 +173,21 @@ const updateTeacherImage = async (req, res) => {
       return warningResponse(res, "Teacher not found", 404);
     }
 
-    const image = req.file?.filename;
-    const imageUrl = image ? `${req.protocol}://${req.get("host")}/images/${image}`: teacher.image_url;
+    let imageUrl = null;
+    let publicId = null;
+    if(req.file.path) {
+      const uploaded = await uploadImage(req.file.path);
+      imageUrl = uploaded.url;
+      publicId = uploaded.publicId;
+    }
+
     // remove old image
-    if(image && teacher.image_url) {
-      const originalName = teacher.image_url.split('/').pop();
-      const filePath = path.join('public', 'images', originalName);
-      await fs.removeSync(filePath);
+    if(imageUrl && teacher.image_url && teacher.public_id) {
+      const removeImage = await deleteImage(teacher.public_id);
     }
 
     teacher.image_url = imageUrl;
+    teacher.public_id = publicId;
     await teacher.save({ validate: true });
 
     successResponse(res, "Teacher image updated successfully", teacher);
@@ -211,6 +223,11 @@ const deleteTeacher = async (req, res) => {
     if (!teacher) {
       return warningResponse(res, "Teacher not found", 404);
     }
+
+    if(teacher.public_id) {
+      const removeImage = await deleteImage(teacher.public_id);
+    }
+
     await teacher.destroy();
     successResponse(res, "Teacher deleted successfully", teacher);
   } catch (err) {
