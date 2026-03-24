@@ -18,7 +18,7 @@ const { rolePermissions } = require("../middleware/role.middleware");
 const router = express.Router();
 const multer = require("multer");
 
-const upload = multer({ dest: "/uploads" });
+const upload = multer({ dest: "/public/images" });
 
 router
   .route("/")
