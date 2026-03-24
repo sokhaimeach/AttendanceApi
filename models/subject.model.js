@@ -16,7 +16,7 @@ const SubjcetSchema = sequelize.define(
     },
   },
   {
-    tableName: "Subject_tbl",
+    tableName: "subject_tbl",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at"

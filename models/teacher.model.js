@@ -46,7 +46,7 @@ const TeacherSchema = sequelize.define(
     }
   },
   {
-    tableName: 'Teacher_tbl',
+    tableName: 'teacher_tbl',
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",

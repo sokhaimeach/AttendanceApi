@@ -43,7 +43,7 @@ const AttendanceSchema = sequelize.define(
     },
   },
   {
-    tableName: "Attendance_tbl",
+    tableName: "attendance_tbl",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at"

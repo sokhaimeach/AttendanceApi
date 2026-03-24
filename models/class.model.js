@@ -14,7 +14,7 @@ const ClassSchema = sequelize.define("Class", {
    }
 },
 {
-    tableName: "Class_tbl",
+    tableName: "class_tbl",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at"

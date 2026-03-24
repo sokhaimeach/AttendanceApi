@@ -22,7 +22,7 @@ const StudentSchema = sequelize.define("Student", {
     }
 },
 {
-    tableName: 'Student_tbl',
+    tableName: 'student_tbl',
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at"
